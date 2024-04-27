@@ -4,12 +4,17 @@ data "aws_ami" "tekyz_ami" {
   owners      = ["099720109477"]
 }
 
+data "aws_iam" "tekyz_iam_role" {
+  name = "Admin_role"
+}
+
 
 resource "aws_instance" "tekyz_demo" {
   ami                         = data.aws_ami.tekyz_ami.id
   instance_type               = var.instance_type
   subnet_id                   = var.subnet_id
   key_name                    = var.key_name
+  iam_instance_profile        = data.aws_ami.tekyz_ami.arn
   associate_public_ip_address = true
 
   root_block_device {
@@ -35,10 +40,12 @@ resource "aws_instance" "tekyz_demo" {
     sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
     curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
     sudo install minikube-linux-amd64 /usr/local/bin/minikube
-    curl -LO https://releases.hashicorp.com/terraform/1.8.2/terraform_1.8.2_linux_386.zip -o terraform_1.8.2_linux_386.zip
-    unzip terraform_1.8.2_linux_386.zip
-    sudo apt update && sudo apt install terraform
+    wget https://releases.hashicorp.com/terraform/1.8.2/terraform_1.8.2_linux_amd64.zip
+    sudo unzip terraform_1.8.2_linux_amd64.zip -d /usr/local/bin
+    minikube start --force
     sudo apt install git-all
   EOF
 
 }
+
+
