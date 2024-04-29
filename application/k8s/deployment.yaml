@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: techyz-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: techyz
+  template:
+    metadata:
+      labels:
+        app: techyz
+    spec:
+      containers:
+        - name: techyz
+          image: aitha9/techyz:latest
+          ports:
+            - containerPort: 5000
+          resources:
+            requests:
+              cpu: "1000m"
+              memory: "1Gi"
+            limits:
+              cpu: "2000m"
+              memory: "2Gi" 

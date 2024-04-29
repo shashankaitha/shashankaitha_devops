@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: techyz-service
+spec:
+  selector:
+    app: techyz
+  ports:
+    - protocol: TCP
+      port: 80 # Expose your service on port 80 externally
+      targetPort: 5000
+      nodePort: 30000 # Point to your container port
+  type: NodePort # Expose the service using a randomly selected port on each cluster node
